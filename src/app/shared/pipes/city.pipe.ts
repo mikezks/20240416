@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform, inject } from '@angular/core';
-import { FlightService } from '../../flight-search/flight.service';
+import { FlightService } from '../../booking/data-access/flight.service';
 import { Observable, delay, map, of, startWith } from 'rxjs';
 
 @Pipe({

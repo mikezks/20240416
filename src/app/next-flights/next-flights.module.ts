@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { NextFlightsComponent } from './next-flights.component';
-import { NextFlightsService } from './next-flights.service';
-import { CheckinComponent } from './checkin.component';
+import { NextFlightsComponent } from './features/next-flights/next-flights.component';
+import { NextFlightsService } from './data-access/next-flights.service';
+import { CheckinComponent } from './ui/checkin/checkin.component';
 
 
 @NgModule({

@@ -1,0 +1,85 @@
+<div class="card">
+  <div class="card-header">
+    <h2 class="card-title">Flight Edit</h2>
+  </div>
+
+  <mat-dialog-content>
+    <div class="card-body">
+
+      <form #editForm="ngForm">
+        <div class="form-group">
+          <label>ID</label>
+          <input name="id" [(ngModel)]="flight.id" class="form-control">
+        </div>
+
+        <div class="form-group">
+          <label>From</label>
+          <input
+            name="from"
+            [(ngModel)]="flight.from"
+            class="form-control"
+            required
+            minlength="3"
+            [city]="['Graz', 'Hamburg', 'Wien']"
+          >
+        </div>
+        @if (editForm?.controls?.['from']?.invalid) {
+          <div class="alert alert-danger">
+            From control is not valid. Please see detailed error messages.
+          </div>
+        }
+        @if (editForm?.controls?.['from']?.hasError('required')) {
+          <div class="alert alert-danger">
+            From control is a mandatory field. Please enter a value.
+          </div>
+        }
+        @if (editForm?.controls?.['from']?.hasError('minlength')) {
+          <div class="alert alert-danger">
+            From control needs to have at least
+            {{ editForm?.controls?.['from']?.errors?.['minlength']?.['requiredLength'] }}
+            char(s).<br>
+            You entered
+            {{ editForm?.controls?.['from']?.errors?.['minlength']?.['actualLength'] }}
+            char(s).
+          </div>
+        }
+        @if (editForm?.controls?.['from']?.hasError('city')) {
+          <div class="alert alert-danger">
+            From control as an invalid city name entered.<br>
+            Please use one of those cities:<br>
+            {{ editForm?.controls?.['from']?.errors?.['city']?.['validCities'].join(', ') }}
+          </div>
+        }
+        @if (editForm?.controls?.['from']?.errors) {
+          <div>
+            <pre>{{
+              editForm?.controls?.['from']?.errors | json
+            }}</pre>
+          </div>
+        }
+
+        <div class="form-group">
+          <label>To</label>
+          <input
+            name="to"
+            [(ngModel)]="flight.to"
+            class="form-control"
+            required
+            minlength="3"
+          >
+        </div>
+
+        <div class="form-group">
+          <label>Date</label>
+          <input name="date" [(ngModel)]="flight.date" class="form-control">
+        </div>
+
+        <div class="form-group">
+          <button (click)="save()" class="btn btn-default">Save</button>
+          <button (click)="close()" class="btn btn-default">Close</button>
+        </div>
+      </form>
+
+    </div>
+  </mat-dialog-content>
+</div>

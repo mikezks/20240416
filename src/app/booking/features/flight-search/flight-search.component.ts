@@ -1,12 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { Component, computed, effect, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Flight } from '../model/flight';
-import { FlightService } from './flight.service';
-import { DummyFlightService } from './dummy-flight.service';
-import { CityPipe } from '../shared/pipes/city.pipe';
+import { Flight } from '../../../model/flight';
+import { FlightService } from '../../data-access/flight.service';
+import { DummyFlightService } from '../../data-access/dummy-flight.service';
+import { CityPipe } from '../../../shared/pipes/city.pipe';
 import { SIGNAL } from '@angular/core/primitives/signals';
-import { FlightCardComponent } from '../flight-card/flight-card.component';
+import { FlightCardComponent } from '../../ui/flight-card/flight-card.component';
 
 @Component({
   selector: 'app-flight-search',

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { Flight, initFlight } from '../model/flight';
+import { Flight, initFlight } from '../../model/flight';
 import { FlightService } from './flight.service';
 
 @Injectable({
