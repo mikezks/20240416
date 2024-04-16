@@ -11,4 +11,8 @@ import { SidebarComponent } from './sidebar/sidebar.component';
 })
 export class AppComponent {
   title = 'Hello World!';
+
+  setTitle(): void {
+    this.title = 'Hello Angular! :)';
+  }
 }
