@@ -1,7 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Flight } from '../model/flight';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-flight-search',
@@ -14,31 +15,26 @@ import { Flight } from '../model/flight';
   styleUrl: './flight-search.component.scss'
 })
 export class FlightSearchComponent {
+  private http = inject(HttpClient);
+
   from = 'Hamburg';
   to = 'Graz';
-  flights: Flight[] = [
-    {
-      id: 1,
-      from: 'London',
-      to: 'Paris',
-      date: new Date().toISOString(),
-      delayed: false
-    },
-    {
-      id: 2,
-      from: 'NY',
-      to: 'LA',
-      date: new Date().toISOString(),
-      delayed: false
-    },
-  ];
+  flights: Flight[] = [];
   selectedFlight: Flight | undefined;
 
   search(): void {
-    console.log(this.from, this.to);
+    const url = 'https://demo.angulararchitects.io/api/flight';
+    const params = { from: this.from, to: this.to };
+
+    this.http.get<Flight[]>(url, { params })
+      .subscribe(
+        flights => this.flights = flights
+      );
   }
 
   select(flight: Flight): void {
-    this.selectedFlight = flight;
+    this.selectedFlight = this.selectedFlight === flight
+      ? undefined
+      : flight;
   }
 }
