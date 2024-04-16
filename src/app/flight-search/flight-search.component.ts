@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Flight } from '../model/flight';
-import { HttpClient } from '@angular/common/http';
+import { FlightService } from './flight.service';
 
 @Component({
   selector: 'app-flight-search',
@@ -15,7 +15,7 @@ import { HttpClient } from '@angular/common/http';
   styleUrl: './flight-search.component.scss'
 })
 export class FlightSearchComponent {
-  private http = inject(HttpClient);
+  private flightService = inject(FlightService);
 
   from = 'Hamburg';
   to = 'Graz';
@@ -28,10 +28,7 @@ export class FlightSearchComponent {
     this.message = '';
     this.selectedFlight = undefined;
 
-    const url = 'https://demo.angulararchitects.io/api/flight';
-    const params = { from: this.from, to: this.to };
-
-    this.http.get<Flight[]>(url, { params })
+    this.flightService.find(this.from, this.to)
       .subscribe(
         flights => this.flights = flights
       );
@@ -46,21 +43,16 @@ export class FlightSearchComponent {
   save(): void {
     if (!this.selectedFlight) return;
 
-    const url = 'https://demo.angulararchitects.io/api/flight';
-
-    const headers = {
-      Accept: 'application/json',
-    };
-
-    this.http.post<Flight>(url, this.selectedFlight, { headers }).subscribe({
-      next: (flight) => {
-        this.selectedFlight = flight;
-        this.message = 'Update successful!';
-      },
-      error: (errResponse) => {
-        this.message = 'Error on updating the Flight';
-        console.error(this.message, errResponse);
-      },
-    });
+    this.flightService.save(this.selectedFlight)
+      .subscribe({
+        next: (flight) => {
+          this.selectedFlight = flight;
+          this.message = 'Update successful!';
+        },
+        error: (errResponse) => {
+          this.message = 'Error on updating the Flight';
+          console.error(this.message, errResponse);
+        },
+      });
   }
 }
