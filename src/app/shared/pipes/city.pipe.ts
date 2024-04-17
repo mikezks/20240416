@@ -1,13 +1,23 @@
-import { Pipe, PipeTransform } from '@angular/core';
+import { Pipe, PipeTransform, inject } from '@angular/core';
+import { FlightService } from '../../flight-search/flight.service';
+import { Observable, delay, map, of, startWith } from 'rxjs';
 
 @Pipe({
   name: 'city',
   standalone: true
 })
 export class CityPipe implements PipeTransform {
-  transform(value: string, format = 'long'): string {
+  private flightService = inject(FlightService);
+
+  transform(value: string, format = 'long'): Observable<string> {
     let short = '';
     let long = '';
+
+    let myFromValueServer = '[not yet available]';
+
+    const myFromValueServer$ = this.flightService.find('Ham', 'Gra').pipe(
+      map(flights => flights?.[0]?.from ?? myFromValueServer)
+    );
 
     switch (value) {
       case 'Graz':
@@ -24,9 +34,17 @@ export class CityPipe implements PipeTransform {
     }
 
     if (format === 'short') {
-      return short;
+      return myFromValueServer$.pipe(
+        delay(3_000),
+        map(value => short + ' ' + value),
+        startWith('🤯')
+      );
     }
 
-    return long;
+    return myFromValueServer$.pipe(
+      delay(3_000),
+      map(value => long + ' ' + value),
+      startWith('🤔')
+    );
   }
 }
