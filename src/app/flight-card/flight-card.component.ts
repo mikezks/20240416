@@ -1,4 +1,4 @@
-import { Component, input, model } from '@angular/core';
+import { Component, OnDestroy, OnInit, effect, input, model } from '@angular/core';
 import { Flight } from '../model/flight';
 import { NgClass } from '@angular/common';
 
@@ -31,11 +31,25 @@ import { NgClass } from '@angular/common';
     </div>
   `
 })
-export class FlightCardComponent {
+export class FlightCardComponent implements OnInit, OnDestroy {
   item = input.required<Flight>();
   selected = model(false);
 
+  constructor() {
+    effect(
+      () => console.log(this.item())
+    );
+  }
+
+  ngOnInit(): void {
+    console.log('Flight Card INIT', this.item().id);
+  }
+
   toggleSelection(): void {
     this.selected.update(selected => !selected);
+  }
+
+  ngOnDestroy(): void {
+    console.log('Flight Card DESTROY', this.item().id);
   }
 }
