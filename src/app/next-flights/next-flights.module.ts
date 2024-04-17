@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NextFlightsComponent } from './next-flights.component';
 import { NextFlightsService } from './next-flights.service';
-import { CheckinComponent } from './checkin/checkin.component';
+import { CheckinComponent } from './checkin.component';
 
 
 @NgModule({

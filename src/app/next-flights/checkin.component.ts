@@ -4,9 +4,8 @@ import { Component } from '@angular/core';
   selector: 'app-checkin',
   standalone: true,
   imports: [],
-  templateUrl: './checkin.component.html',
-  styleUrl: './checkin.component.scss'
+  template: `
+    <b>Check in for your flights now!</b>
+  `
 })
-export class CheckinComponent {
-
-}
+export class CheckinComponent {}
