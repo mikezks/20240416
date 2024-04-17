@@ -32,7 +32,11 @@
         <app-flight-card
           [item]="flight"
           [(selected)]="basket()[flight.id]"
-        />
+        >
+          <!-- Content of Flight Card -->
+          <h4 class="content-title">Premium Flight</h4>
+          <span>Details about my favorite Flight.</span>
+        </app-flight-card>
       </div>
     }
   </div>
