@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { Component, input, model } from '@angular/core';
 import { Flight } from '../model/flight';
 import { NgClass } from '@angular/common';
 
@@ -33,9 +33,9 @@ import { NgClass } from '@angular/common';
 })
 export class FlightCardComponent {
   item = input.required<Flight>();
-  selected = input(false);
+  selected = model(false);
 
   toggleSelection(): void {
-
+    this.selected.update(selected => !selected);
   }
 }
