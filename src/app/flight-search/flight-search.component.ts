@@ -4,13 +4,15 @@ import { FormsModule } from '@angular/forms';
 import { Flight } from '../model/flight';
 import { FlightService } from './flight.service';
 import { DummyFlightService } from './dummy-flight.service';
+import { CityPipe } from '../shared/pipes/city.pipe';
 
 @Component({
   selector: 'app-flight-search',
   standalone: true,
   imports: [
     CommonModule,
-    FormsModule
+    FormsModule,
+    CityPipe
   ],
   providers: [
     /* {
