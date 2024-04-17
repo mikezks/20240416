@@ -1,4 +1,4 @@
-import { Component, input, model } from '@angular/core';
+import { Component, effect, input, model, output, signal } from '@angular/core';
 import { Flight } from '../model/flight';
 import { NgClass } from '@angular/common';
 
@@ -10,7 +10,7 @@ import { NgClass } from '@angular/common';
   ],
   template: `
     <div
-      [ngClass]="{ selected: selected() }"
+      [ngClass]="{ selected: selectedInternalState() }"
       class="card"
     >
       <div class="card-header">
@@ -24,7 +24,7 @@ import { NgClass } from '@angular/common';
         <p>Delayed: {{ item().delayed }}</p>
         <p>
           <button (click)="toggleSelection()" class="btn btn-default">
-            {{ selected() ? 'Remove' : 'Select' }}
+            {{ selectedInternalState() ? 'Remove' : 'Select' }}
           </button>
         </p>
       </div>
@@ -33,9 +33,19 @@ import { NgClass } from '@angular/common';
 })
 export class FlightCardComponent {
   item = input.required<Flight>();
-  selected = model(false);
+  selected = input(false);
+  selectedChange = output<boolean>();
+  protected selectedInternalState = signal(false);
+
+  constructor() {
+    effect(
+      () => this.selectedInternalState.set(this.selected()),
+      { allowSignalWrites: true }
+    );
+  }
 
   toggleSelection(): void {
-    this.selected.update(selected => !selected);
+    this.selectedInternalState.update(selected => !selected);
+    this.selectedChange.emit(this.selectedInternalState());
   }
 }
