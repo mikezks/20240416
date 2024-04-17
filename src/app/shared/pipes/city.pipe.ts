@@ -16,7 +16,7 @@ export class CityPipe implements PipeTransform {
     let myFromValueServer = '[not yet available]';
 
     const myFromValueServer$ = this.flightService.find('Ham', 'Gra').pipe(
-      map(flights => flights?.[0]?.from ?? myFromValueServer)
+      map(flights => '' ?? myFromValueServer)
     );
 
     switch (value) {
@@ -35,14 +35,14 @@ export class CityPipe implements PipeTransform {
 
     if (format === 'short') {
       return myFromValueServer$.pipe(
-        delay(3_000),
+        // delay(3_000),
         map(value => short + ' ' + value),
         startWith('🤯')
       );
     }
 
     return myFromValueServer$.pipe(
-      delay(3_000),
+      // delay(3_000),
       map(value => long + ' ' + value),
       startWith('🤔')
     );

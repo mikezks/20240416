@@ -14,6 +14,9 @@
         <input [(ngModel)]="to" name="to" class="form-control">
       </div>
       <div class="form-group">
+        <p>{{ flightRoute() }}</p>
+      </div>
+      <div class="form-group">
         <button (click)="search()" class="btn btn-default">
           Search
         </button>
