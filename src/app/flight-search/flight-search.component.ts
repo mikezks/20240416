@@ -6,6 +6,7 @@ import { FlightService } from './flight.service';
 import { DummyFlightService } from './dummy-flight.service';
 import { CityPipe } from '../shared/pipes/city.pipe';
 import { SIGNAL } from '@angular/core/primitives/signals';
+import { FlightCardComponent } from '../flight-card/flight-card.component';
 
 @Component({
   selector: 'app-flight-search',
@@ -13,7 +14,8 @@ import { SIGNAL } from '@angular/core/primitives/signals';
   imports: [
     CommonModule,
     FormsModule,
-    CityPipe
+    CityPipe,
+    FlightCardComponent
   ],
   providers: [
     /* {
@@ -33,6 +35,10 @@ export class FlightSearchComponent {
   to = signal('Graz');
   flights: Flight[] = [];
   selectedFlight: Flight | undefined;
+  basket = signal<Record<number, boolean>>({
+    3: true,
+    5: true
+  })
   message = '';
   flightRoute = computed(
     () => 'From ' + this.from() + ' to ' + this.to() + '.'
@@ -42,12 +48,6 @@ export class FlightSearchComponent {
     effect(
       () => console.log(this.flightRoute())
     );
-
-    setTimeout(
-      () => this.from.set('Madrid')
-    , 3_000)
-
-    console.log(this.from[SIGNAL]);
   }
 
   search(): void {
