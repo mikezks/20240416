@@ -3,6 +3,7 @@ import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Flight } from '../model/flight';
 import { FlightService } from './flight.service';
+import { DummyFlightService } from './dummy-flight.service';
 
 @Component({
   selector: 'app-flight-search',
@@ -11,11 +12,19 @@ import { FlightService } from './flight.service';
     CommonModule,
     FormsModule
   ],
+  providers: [
+    /* {
+      provide: FlightService,
+      useClass: DummyFlightService
+    } */
+  ],
   templateUrl: './flight-search.component.html',
   styleUrl: './flight-search.component.scss'
 })
 export class FlightSearchComponent {
-  private flightService = inject(FlightService);
+  private flightService = inject(FlightService/* , {
+    optional: true
+  } */);
 
   from = 'Hamburg';
   to = 'Graz';
@@ -28,7 +37,7 @@ export class FlightSearchComponent {
     this.message = '';
     this.selectedFlight = undefined;
 
-    this.flightService.find(this.from, this.to)
+    this.flightService?.find(this.from, this.to)
       .subscribe(
         flights => this.flights = flights
       );
@@ -43,7 +52,7 @@ export class FlightSearchComponent {
   save(): void {
     if (!this.selectedFlight) return;
 
-    this.flightService.save(this.selectedFlight)
+    this.flightService?.save(this.selectedFlight)
       .subscribe({
         next: (flight) => {
           this.selectedFlight = flight;

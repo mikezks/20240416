@@ -7,7 +7,7 @@ export interface Flight {
   delayed: boolean;
 }
 
-export const initlFlight: Flight = {
+export const initFlight: Flight = {
   id: 0,
   from: '',
   to: '',
