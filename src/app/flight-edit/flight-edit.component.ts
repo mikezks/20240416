@@ -3,6 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { Flight } from '../model/flight';
 import { JsonPipe } from '@angular/common';
+import { CityValidatorDirective } from '../shared/validation/city-validator.directive';
 
 @Component({
   selector: 'app-flight-edit',
@@ -10,7 +11,8 @@ import { JsonPipe } from '@angular/common';
   imports: [
     FormsModule,
     MatDialogModule,
-    JsonPipe
+    JsonPipe,
+    CityValidatorDirective
   ],
   templateUrl: './flight-edit.component.html',
   styleUrl: './flight-edit.component.scss'

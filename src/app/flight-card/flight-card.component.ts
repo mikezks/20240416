@@ -3,6 +3,7 @@ import { NgClass } from '@angular/common';
 import { Flight } from '../model/flight';
 import { MatDialog } from '@angular/material/dialog';
 import { FlightEditComponent } from '../flight-edit/flight-edit.component';
+import { FlightEditReactiveComponent } from '../flight-edit-reactive/flight-edit-reactive.component';
 
 @Component({
   selector: 'app-flight-card',

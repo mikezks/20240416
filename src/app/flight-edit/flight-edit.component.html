@@ -20,6 +20,7 @@
             class="form-control"
             required
             minlength="3"
+            [city]="['Graz', 'Hamburg', 'Wien']"
           >
         </div>
         @if (editForm?.controls?.['from']?.invalid) {
@@ -35,11 +36,18 @@
         @if (editForm?.controls?.['from']?.hasError('minlength')) {
           <div class="alert alert-danger">
             From control needs to have at least
-             {{ editForm?.controls?.['from']?.errors?.['minlength']?.['requiredLength'] }}
+            {{ editForm?.controls?.['from']?.errors?.['minlength']?.['requiredLength'] }}
             char(s).<br>
             You entered
             {{ editForm?.controls?.['from']?.errors?.['minlength']?.['actualLength'] }}
             char(s).
+          </div>
+        }
+        @if (editForm?.controls?.['from']?.hasError('city')) {
+          <div class="alert alert-danger">
+            From control as an invalid city name entered.<br>
+            Please use one of those cities:<br>
+            {{ editForm?.controls?.['from']?.errors?.['city']?.['validCities'].join(', ') }}
           </div>
         }
         @if (editForm?.controls?.['from']?.errors) {
