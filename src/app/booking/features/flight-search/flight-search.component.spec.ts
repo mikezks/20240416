@@ -9,7 +9,7 @@ import { By } from '@angular/platform-browser';
 describe('Unit test: flight-search.component', () => {
   let component: FlightSearchComponent;
   let fixture: ComponentFixture<FlightSearchComponent>;
-  let flightService: FlightService;
+  let ctrl: HttpTestingController;
 
   function setInput(selector: string, value: string): void {
     const input = fixture.debugElement.query(By.css(selector)).nativeElement;
@@ -23,17 +23,12 @@ describe('Unit test: flight-search.component', () => {
       imports: [FlightSearchComponent],
       providers: [
         provideHttpClient(),
-        {
-          provide: FlightService,
-          useClass: DummyFlightService
-        }
+        provideHttpClientTesting(),
       ]
     }).compileComponents();
 
-    flightService = TestBed.inject(FlightService);
-    spyOn(flightService, 'find').and.callThrough();
-
     fixture = TestBed.createComponent(FlightSearchComponent);
+    ctrl = TestBed.inject(HttpTestingController);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -46,9 +41,33 @@ describe('Unit test: flight-search.component', () => {
     component.from.set('Graz');
     component.to.set('Hamburg');
     component.search();
+    const req = ctrl.expectOne('https://demo.angulararchitects.io/api/flight?from=Graz&to=Hamburg');
+    req.flush([
+      {
+        id: 22,
+        from: 'here',
+        to: 'there',
+        date: '',
+        delayed: false,
+      },
+      {
+        id: 23,
+        from: 'here',
+        to: 'there',
+        date: '',
+        delayed: false,
+      },
+      {
+        id: 23,
+        from: 'here',
+        to: 'there',
+        date: '',
+        delayed: false,
+      },
+    ]);
 
-    expect(component.flights.length).toBe(1);
-    expect(flightService.find).toHaveBeenCalled();
+    expect(component.flights.length).toBe(3);
+    ctrl.verify();
   });
 
   it('should *not* load flights when user did not enter from and to', () => {
@@ -57,6 +76,18 @@ describe('Unit test: flight-search.component', () => {
     component.search();
 
     expect(component.flights.length).toBe(0);
-    expect(flightService.find).not.toHaveBeenCalled();
+    ctrl.verify();
   });
+
+  it('should have a disabled search button w/o params', fakeAsync(async () => {
+    tick();
+    // Set values
+    setInput('input[name=from]', '');
+    setInput('input[name=to]', '');
+    // Trigger change detection
+    fixture.detectChanges();
+    // Get disabled
+    const disabled = fixture.debugElement.query(By.css('button')).nativeElement.disabled;
+     expect(disabled).toBeTruthy();
+  }));
 });
