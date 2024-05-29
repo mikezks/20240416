@@ -2,7 +2,6 @@ import { Component, OnDestroy, OnInit, effect, inject, input, model } from '@ang
 import { NgClass } from '@angular/common';
 import { Flight } from '../model/flight';
 import { MatDialog } from '@angular/material/dialog';
-import { FlightEditComponent } from '../flight-edit/flight-edit.component';
 import { FlightEditReactiveComponent } from '../flight-edit-reactive/flight-edit-reactive.component';
 
 @Component({
@@ -58,7 +57,7 @@ export class FlightCardComponent {
   }
 
   edit(): void {
-    this.dialog.open(FlightEditComponent, {
+    this.dialog.open(FlightEditReactiveComponent, {
       data: { flight: { ...this.item() }},
       minWidth: '70%',
       panelClass: 'form-dialog'
