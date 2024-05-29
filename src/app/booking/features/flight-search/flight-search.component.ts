@@ -2,10 +2,8 @@ import { CommonModule } from '@angular/common';
 import { Component, computed, effect, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Flight } from '../../../model/flight';
-import { FlightService } from '../../data-access/flight.service';
-import { DummyFlightService } from '../../data-access/dummy-flight.service';
 import { CityPipe } from '../../../shared/pipes/city.pipe';
-import { SIGNAL } from '@angular/core/primitives/signals';
+import { FlightService } from '../../data-access/flight.service';
 import { FlightCardComponent } from '../../ui/flight-card/flight-card.component';
 
 @Component({
@@ -17,19 +15,11 @@ import { FlightCardComponent } from '../../ui/flight-card/flight-card.component'
     CityPipe,
     FlightCardComponent
   ],
-  providers: [
-    /* {
-      provide: FlightService,
-      useClass: DummyFlightService
-    } */
-  ],
   templateUrl: './flight-search.component.html',
   styleUrl: './flight-search.component.scss'
 })
 export class FlightSearchComponent {
-  private flightService = inject(FlightService/* , {
-    optional: true
-  } */);
+  private flightService = inject(FlightService);
 
   from = signal('Hamburg');
   to = signal('Graz');
@@ -51,6 +41,10 @@ export class FlightSearchComponent {
   }
 
   search(): void {
+    if (!this.from() || !this.to()) {
+      return;
+    }
+
     // Reset properties
     this.message = '';
     this.selectedFlight = undefined;
