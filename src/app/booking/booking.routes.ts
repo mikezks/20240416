@@ -7,7 +7,7 @@ import { initFlight } from "../model/flight";
 
 export const BOOKING_ROUTES: Routes = [
   {
-    path: 'booking',
+    path: '',
     children: [
       {
         path: '',
@@ -29,3 +29,5 @@ export const BOOKING_ROUTES: Routes = [
     ]
   }
 ];
+
+export default BOOKING_ROUTES;

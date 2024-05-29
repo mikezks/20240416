@@ -15,7 +15,10 @@ export const APP_ROUTES: Routes = [
     path: 'home',
     component: HomeComponent
   },
-  ...BOOKING_ROUTES,
+  {
+    path: 'booking',
+    loadChildren: () => import('./booking/booking.routes')
+  },
   {
     path: 'about',
     component: AboutComponent

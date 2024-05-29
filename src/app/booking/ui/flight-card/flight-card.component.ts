@@ -47,9 +47,9 @@ export class FlightCardComponent {
   selected = model(false);
 
   constructor() {
-    effect(
+    /* effect(
       () => console.log(this.item())
-    );
+    ); */
   }
 
   toggleSelection(): void {
