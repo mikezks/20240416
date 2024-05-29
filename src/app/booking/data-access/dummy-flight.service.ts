@@ -14,6 +14,9 @@ export class DummyFlightService implements FlightService {
       to: 'San Francisco'
     }]);
   }
+  findById(): Observable<Flight> {
+    return of({ ...initFlight });
+  }
   save(): Observable<Flight> {
     return of(initFlight);
   }

@@ -1,13 +1,15 @@
-import { Component, OnDestroy, OnInit, effect, inject, input, model } from '@angular/core';
 import { NgClass } from '@angular/common';
+import { Component, effect, input, model } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { Flight } from '../../../model/flight';
-import { MatDialog } from '@angular/material/dialog';
-import { FlightEditReactiveComponent } from '../../features/flight-edit-reactive/flight-edit-reactive.component';
 
 @Component({
   selector: 'app-flight-card',
   standalone: true,
-  imports: [NgClass],
+  imports: [
+    NgClass,
+    RouterLink
+  ],
   template: `
     <!-- View of Flight Card -->
     <div
@@ -30,7 +32,9 @@ import { FlightEditReactiveComponent } from '../../features/flight-edit-reactive
           <button (click)="toggleSelection()" class="btn btn-default">
             {{ selected() ? 'Remove' : 'Select' }}
           </button>
-          <button (click)="edit()" class="btn btn-default">
+          <button
+            [routerLink]="['../flight-edit', item().id, { showDetails: true }]"
+            class="btn btn-default">
             Edit
           </button>
         </p>
@@ -39,8 +43,6 @@ import { FlightEditReactiveComponent } from '../../features/flight-edit-reactive
   `
 })
 export class FlightCardComponent {
-  private dialog = inject(MatDialog);
-
   item = input.required<Flight>();
   selected = model(false);
 
@@ -52,13 +54,5 @@ export class FlightCardComponent {
 
   toggleSelection(): void {
     this.selected.update(selected => !selected);
-  }
-
-  edit(): void {
-    this.dialog.open(FlightEditReactiveComponent, {
-      data: { flight: { ...this.item() }},
-      minWidth: '70%',
-      panelClass: 'form-dialog'
-    });
   }
 }

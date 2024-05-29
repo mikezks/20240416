@@ -20,5 +20,6 @@ let config: { flightService: 'dummy' | 'default' } = {
 })
 export abstract class FlightService {
   abstract find(from: string, to: string): Observable<Flight[]>;
+  abstract findById(id: number): Observable<Flight>;
   abstract save(flight: Flight): Observable<Flight>;
 }

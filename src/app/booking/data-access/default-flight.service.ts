@@ -19,6 +19,13 @@ export class DefaultFlightService implements FlightService {
     return this.http.get<Flight[]>(url, { params });
   }
 
+  findById(id: number): Observable<Flight> {
+    const url = this.baseUrl + '/flight/' + id;
+
+    return this.http.get<Flight>(url);
+  }
+
+
   save(flight: Flight): Observable<Flight> {
     const url = this.baseUrl + '/flight';
 
