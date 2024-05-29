@@ -1,8 +1,7 @@
 import { Component, inject } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
 import { NavbarComponent } from './core/ui/navbar/navbar.component';
 import { SidebarComponent } from './core/ui/sidebar/sidebar.component';
-import { FlightSearchComponent } from './booking/features/flight-search/flight-search.component';
-import { NextFlightsModule } from './next-flights/next-flights.module';
 import { ConfigService } from './shared/config/config.service';
 
 
@@ -12,8 +11,7 @@ import { ConfigService } from './shared/config/config.service';
   imports: [
     SidebarComponent,
     NavbarComponent,
-    FlightSearchComponent,
-    NextFlightsModule
+    RouterOutlet
   ],
   template: `
     <div class="wrapper">
@@ -26,9 +24,7 @@ import { ConfigService } from './shared/config/config.service';
 
         <div class="content">
 
-          <app-flight-search />
-
-          <app-next-flights />
+          <router-outlet />
 
         </div>
 
