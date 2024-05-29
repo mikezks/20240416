@@ -1,6 +1,8 @@
-import { Component, OnDestroy, OnInit, effect, input, model } from '@angular/core';
+import { Component, OnDestroy, OnInit, effect, inject, input, model } from '@angular/core';
 import { NgClass } from '@angular/common';
 import { Flight } from '../model/flight';
+import { MatDialog } from '@angular/material/dialog';
+import { FlightEditComponent } from '../flight-edit/flight-edit.component';
 
 @Component({
   selector: 'app-flight-card',
@@ -30,12 +32,17 @@ import { Flight } from '../model/flight';
           <button (click)="toggleSelection()" class="btn btn-default">
             {{ selected() ? 'Remove' : 'Select' }}
           </button>
+          <button (click)="edit()" class="btn btn-default">
+            Edit
+          </button>
         </p>
       </div>
     </div>
   `
 })
 export class FlightCardComponent {
+  private dialog = inject(MatDialog);
+
   item = input.required<Flight>();
   selected = model(false);
 
@@ -47,5 +54,13 @@ export class FlightCardComponent {
 
   toggleSelection(): void {
     this.selected.update(selected => !selected);
+  }
+
+  edit(): void {
+    this.dialog.open(FlightEditComponent, {
+      data: { flight: { ...this.item() }},
+      minWidth: '70%',
+      panelClass: 'form-dialog'
+    });
   }
 }
