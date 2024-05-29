@@ -1,11 +1,11 @@
 import { JsonPipe } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, booleanAttribute, effect, inject, input, numberAttribute } from '@angular/core';
+import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
-import { initFlight } from '../../../model/flight';
+import { switchMap } from 'rxjs';
+import { Flight, initFlight } from '../../../model/flight';
 import { CityValidatorDirective } from '../../../shared/validation/city-validator.directive';
-import { ActivatedRoute } from '@angular/router';
 import { FlightService } from '../../data-access/flight.service';
-import { distinctUntilChanged, map, switchMap, tap } from 'rxjs';
 
 @Component({
   selector: 'app-flight-edit',
@@ -19,29 +19,26 @@ import { distinctUntilChanged, map, switchMap, tap } from 'rxjs';
   styleUrl: './flight-edit.component.scss'
 })
 export class FlightEditComponent {
-  private route = inject(ActivatedRoute);
   private flightService = inject(FlightService);
 
-  flight = initFlight;
-  id = 0;
-  showDetails = false;
+  id = input(0, {
+    transform: numberAttribute
+  });
+  showDetails = input(false, {
+    transform: booleanAttribute
+  });
+  flightSignal = toSignal(
+    toObservable(this.id).pipe(
+      switchMap(id => this.flightService.findById(id))
+    ), {
+      initialValue: initFlight
+    }
+  );
+  flight: Flight = this.flightSignal();
 
   constructor() {
-    this.route.paramMap.pipe(
-      map(params => ({
-        id: +(params.get('id') || 0),
-        showDetails: params.get('showDetails') === 'true'
-      })),
-      tap(({ id, showDetails }) => {
-        this.id = id;
-        this.showDetails = showDetails
-      }),
-      distinctUntilChanged((prev, curr) => prev.id === curr.id),
-      switchMap(
-        state => this.flightService.findById(state.id)
-      )
-    ).subscribe(
-      flight => this.flight = flight
+    effect(
+      () => this.flight = this.flightSignal()
     );
   }
 
